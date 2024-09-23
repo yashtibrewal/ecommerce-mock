@@ -1,7 +1,10 @@
 import { GetStaticProps } from "next";
-import { Product } from "./Product";
-import Rating from "../components/Rating";
 import Image from "next/image";
+import { FaShoppingCart } from "react-icons/fa";
+
+import { Product } from "@/interfaces/Product";
+import Rating from "@/components/Rating";
+import Layout from "@/components/Layout";
 
 interface Props {
   product: Product | null;
@@ -20,11 +23,9 @@ const ProductView = ({ product }: Props) => {
   console.log(product);
 
   return (
-    <div>
-      ProductView
-      <div className="flex">
-
-        <div className="relative min-w-48 min-h-48 border bg-slate-100">
+    <Layout>
+      <div className="flex mx-auto w-10/12 space-x-10">
+        <div className="relative min-w-96 max-w-max min-h-96 max-h-max  border bg-slate-100">
           <Image
             src={product.image}
             alt={'Product'}
@@ -32,15 +33,18 @@ const ProductView = ({ product }: Props) => {
             style={{ objectFit: "contain" }}
           ></Image>
         </div>
-        <div>
-          <h1>{product.title}</h1>
-          <Rating rating={4}></Rating>
-          <h3>${product.price}</h3>
-          <p>{product.description}</p>
-
+        <div className="p-4 space-y-5">
+          <h1 className="text-4xl font-bold">{product.title}</h1>
+          <Rating rating={product.rating.rate} count={product.rating.count}></Rating>
+          <div>
+            <h5 className="font-light tracking-tight">Price</h5>
+            <h3 className="text-xl font-semibold">${product.price}</h3>
+          </div>
+          <button className="flex items-center justify-center border-2 bg-blue-200 border-blue-500 rounded p-5">
+            Add to cart <FaShoppingCart className="ml-3" /></button>
         </div>
       </div>
-    </div >
+    </Layout>
   )
 
 
