@@ -3,14 +3,18 @@ import Image from "next/image";
 import { FaShoppingCart } from "react-icons/fa";
 import { Product } from "@/interfaces/Product";
 import Rating from "@/components/Rating";
+import { useRouter } from "next/router";
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
+  const router = useRouter();
   return (
-    <div className="border p-4 rounded bg-slate-50">
+    <div
+      onClick={() => router.push(`/products/${product.id}`)}
+      className="border p-4 rounded bg-slate-50 hover:cursor-pointer">
       <div className="relative h-48 w-full mb-4">
         <Image
           src={product.image}

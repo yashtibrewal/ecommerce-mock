@@ -4,6 +4,9 @@ import { GetStaticProps } from "next";
 import Layout from "@/components/Layout";
 import ProductCard from "@/components/ProductCard";
 import { Product } from "@/interfaces/Product";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
+
 
 interface Props {
   products: Product[] | null;
@@ -15,6 +18,7 @@ const ProductsPage = ({ products, categories }: Props) => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products || []);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const router = useRouter();
 
   useEffect(() => {
     if (selectedCategory) {
@@ -60,10 +64,13 @@ const ProductsPage = ({ products, categories }: Props) => {
           </select>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {paginatedProducts.length > 0 ? (
             paginatedProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product.id} product={product} />
             ))
           ) : (
             <p>No products found.</p>
