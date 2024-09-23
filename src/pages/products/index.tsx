@@ -1,11 +1,12 @@
 // pages/products.tsx
 import { useState, useEffect } from "react";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import Layout from "@/components/Layout";
 import ProductCard from "@/components/ProductCard";
 import { Product } from "@/interfaces/Product";
-import { redirect } from "next/navigation";
-import { useRouter } from "next/router";
+import { useCookiesContext } from "@/context/Cookies";
+import { decode } from "jsonwebtoken";
+import { parseUserToken } from "@/utils/token";
 
 
 interface Props {
@@ -18,7 +19,9 @@ const ProductsPage = ({ products, categories }: Props) => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products || []);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const router = useRouter();
+  const { cookies } = useCookiesContext();
+
+  const user = parseUserToken(cookies.token);
 
   useEffect(() => {
     if (selectedCategory) {
@@ -46,7 +49,7 @@ const ProductsPage = ({ products, categories }: Props) => {
     <Layout>
       <div className="container mx-auto p-4 mt-10">
         <h1 className="text-4xl font-bold mb-6">Products</h1>
-
+        {user && <h3 className="text-2xl font-semibold mb-2">Welcome {user.name} </h3>}
         <div className="mb-4">
           <label htmlFor="category" className="mr-2">Filter by Category:</label>
           <select
@@ -102,7 +105,9 @@ const ProductsPage = ({ products, categories }: Props) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
+
+
   try {
     const resProducts = await fetch("https://fakestoreapi.com/products");
     const products = await resProducts.json();
@@ -114,8 +119,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       props: {
         products,
         categories,
-      },
-      revalidate: 3600,
+      }
     };
   } catch (err) {
     console.log(err);
@@ -123,8 +127,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       props: {
         products: null,
         categories: null,
-      },
-      revalidate: 10,
+      }
     };
   }
 };
