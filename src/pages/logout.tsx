@@ -13,7 +13,7 @@ const Logout = () => {
 
     if (response.ok) {
       // Handle successful logout, e.g., redirect to the login page
-      console.log('Logged out successfully');
+      // console.log('Logged out successfully');
       router.push('/login');
 
     } else {
@@ -23,7 +23,7 @@ const Logout = () => {
 
   useEffect(() => {
     handleLogout();
-  }, [])
+  })
 
   return (
     <Layout>

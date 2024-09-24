@@ -1,9 +1,6 @@
 // pages/index.tsx
-import { GetServerSidePropsResult } from 'next';
 
-interface Props {
-
-}
+import { GetServerSideProps } from "next";
 
 export default function Home() {
   return (
@@ -13,7 +10,7 @@ export default function Home() {
 }
 
 
-export function getStaticProps(): GetServerSidePropsResult<Props> {
+export const getServerSideProps: GetServerSideProps = async () => {
 
   return {
     redirect: {

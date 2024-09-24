@@ -1,4 +1,7 @@
 import Layout from "@/components/Layout";
+import { sessionOptions } from "@/interfaces/Session";
+import { getIronSession } from "iron-session";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 // pages/privacy.tsx
 const PrivacyPolicyPage = () => {
@@ -22,5 +25,14 @@ const PrivacyPolicyPage = () => {
     </Layout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }: GetServerSidePropsContext) => {
+  const session = await getIronSession(req, res, sessionOptions);
+  return {
+    props: {
+      session
+    }
+  }
+}
 
 export default PrivacyPolicyPage;

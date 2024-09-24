@@ -2,18 +2,18 @@ import "@/styles/globals.css";
 
 // pages/_app.tsx
 import App, { AppContext, AppProps } from 'next/app';
-import { CookiesProvider } from '@/context/Cookies';
+import { SessionProvider } from '@/context/Session';
 import cookie from 'cookie';
 
 interface MyAppProps extends AppProps {
   cookies: Record<string, string | undefined>; // Define cookies type
 }
 
-function MyApp({ Component, pageProps, cookies }: MyAppProps) {
+function MyApp({ Component, pageProps }: MyAppProps) {
   return (
-    <CookiesProvider cookies={cookies}>
+    <SessionProvider session={pageProps.session}>
       <Component {...pageProps} />
-    </CookiesProvider>
+    </SessionProvider>
   );
 }
 

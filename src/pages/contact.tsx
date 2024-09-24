@@ -1,7 +1,34 @@
 import Layout from "@/components/Layout";
+import { useSessionContext } from "@/context/Session";
+import Session, { LoggedInUser, sessionOptions } from "@/interfaces/Session";
+import { UserSession } from "@/interfaces/UserSession";
+import { getIronSession } from "iron-session";
+import { GetServerSidePropsContext } from "next";
+import { useEffect, useState } from "react";
 
 // pages/contact.tsx
 const ContactPage = () => {
+
+  const session: Session = useSessionContext();
+  // console.log(session, 'contact page')
+  const [user, setUser] = useState<UserSession | null>(null);
+
+  useEffect(() => {
+
+    if (session) {
+      const keys = Object.keys(session);
+
+      if (keys.includes('isLoggedIn')) {
+        setUser({
+          name: (session as LoggedInUser).name,
+          email: (session as LoggedInUser).username
+        })
+      }
+    }
+
+  }, [session])
+
+
   return (
     <Layout>
       <div className="container p-4">
@@ -22,10 +49,10 @@ const ContactPage = () => {
           </div>
           <form className="flex flex-col w-full">
             <label htmlFor="name" className="mb-2">Name:</label>
-            <input type="text" id="name" className="mb-4 p-2 border rounded" />
+            <input type="text" defaultValue={user ? user.name : ''} id="name" className="mb-4 p-2 border rounded" />
 
             <label htmlFor="email" className="mb-2">Email:</label>
-            <input type="email" id="email" className="mb-4 p-2 border rounded" />
+            <input type="email" disabled={true} defaultValue={user ? user.email : ''} id="email" className="mb-4 p-2 border rounded" />
 
             <label htmlFor="message" className="mb-2">Message:</label>
             <textarea id="message" className="mb-4 p-2 border rounded" rows={4} />
@@ -40,5 +67,28 @@ const ContactPage = () => {
     </Layout>
   );
 };
+
+
+export const getServerSideProps = async ({ req, res }: GetServerSidePropsContext) => {
+
+  const session = await getIronSession<Session>(req, res, sessionOptions);
+
+  console.log(session);
+
+  if (!session || !Object.keys(session).includes('isLoggedIn')) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      }
+    }
+  }
+
+  return {
+    props: {
+      session
+    }
+  }
+}
 
 export default ContactPage;

@@ -1,12 +1,13 @@
 // pages/products.tsx
 import { useState, useEffect } from "react";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Layout from "@/components/Layout";
 import ProductCard from "@/components/ProductCard";
 import { Product } from "@/interfaces/Product";
-import { useCookiesContext } from "@/context/Cookies";
-import { decode } from "jsonwebtoken";
-import { parseUserToken } from "@/utils/token";
+import Session, { LoggedInUser, sessionOptions } from "@/interfaces/Session";
+import { getIronSession } from "iron-session";
+import { useSessionContext } from "@/context/Session";
+import { UserSession } from "@/interfaces/UserSession";
 
 
 interface Props {
@@ -19,9 +20,25 @@ const ProductsPage = ({ products, categories }: Props) => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products || []);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const { cookies } = useCookiesContext();
+  const session: Session = useSessionContext();
 
-  const user = parseUserToken(cookies.token);
+  const [user, setUser] = useState<UserSession | null>(null);
+
+  useEffect(() => {
+    console.log('in products page use effect for sessions')
+    if (session) {
+      const keys = Object.keys(session);
+      if (keys.includes('isLoggedIn')) {
+        console.log(keys);
+        console.log(session);
+
+        setUser({
+          name: (session as LoggedInUser).name,
+          email: (session as LoggedInUser).username,
+        })
+      }
+    }
+  }, [session])
 
   useEffect(() => {
     if (selectedCategory) {
@@ -49,7 +66,7 @@ const ProductsPage = ({ products, categories }: Props) => {
     <Layout>
       <div className="container mx-auto p-4 mt-10">
         <h1 className="text-4xl font-bold mb-6">Products</h1>
-        {user && <h3 className="text-2xl font-semibold mb-2">Welcome {user.name} </h3>}
+        {user && <h3 className="text-2xl font-semibold mb-2">Welcome {user && user.name} </h3>}
         <div className="mb-4">
           <label htmlFor="category" className="mr-2">Filter by Category:</label>
           <select
@@ -105,8 +122,11 @@ const ProductsPage = ({ products, categories }: Props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
 
+  const { req, res } = context;
+
+  const session = await getIronSession(req, res, sessionOptions)
 
   try {
     const resProducts = await fetch("https://fakestoreapi.com/products");
@@ -119,6 +139,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
       props: {
         products,
         categories,
+        session,
       }
     };
   } catch (err) {
@@ -127,6 +148,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async () => {
       props: {
         products: null,
         categories: null,
+        session,
       }
     };
   }

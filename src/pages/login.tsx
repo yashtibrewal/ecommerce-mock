@@ -32,7 +32,11 @@ export default function Login() {
         setErrorMessage(data.message || 'Login failed.');
       }
     } catch (error) {
-      setErrorMessage('Something went wrong. Please try again.');
+      if (error instanceof Error) {
+        setErrorMessage('Contact us with this error.' + error.message);
+      } else {
+        setErrorMessage('Something went wrong. Please try again.');
+      }
     }
   };
 
@@ -96,7 +100,7 @@ export default function Login() {
 
         {/* Signup Section */}
         <div className="mt-6">
-          <span className="text-sm">Don't have an account? </span>
+          <span className="text-sm">Don&apos;t have an account? </span>
           <Link href="/signup">
             <span className="text-blue-500 underline cursor-pointer">
               Sign up

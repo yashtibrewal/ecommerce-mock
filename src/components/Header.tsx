@@ -1,22 +1,31 @@
 // components/Header.tsx
-import { useCookiesContext } from '@/context/Cookies';
-import { parseUserToken } from '@/utils/token';
+
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
+
+import { useSessionContext } from '@/context/Session';
+import { useEffect, useState } from 'react';
+import { UserSession } from '@/interfaces/UserSession';
+import { LoggedInUser } from '@/interfaces/Session';
 
 const Header = () => {
 
-  const { cookies } = useCookiesContext();
-  const [login, setLogin] = useState<boolean>(false)
-  const token = parseUserToken(cookies.token || '');
+
+  const session = useSessionContext();
+  const [user, setUser] = useState<UserSession | null>(null);
 
   useEffect(() => {
-    if (token) {
-      console.log(token);
-      setLogin(true);
+    if (session) {
+      const keys = Object.keys(session);
+      // if session doesnt exists, the user is not logged in.
+      if (keys.includes('isLoggedIn')) {
+        setUser({
+          name: (session as LoggedInUser).name,
+          email: (session as LoggedInUser).username
+        })
+      }
     }
-  }, [login])
+  }, [session])
 
 
   return (
@@ -37,18 +46,18 @@ const Header = () => {
               <Link href="/contact" className="hover:text-blue-300">Contact</Link>
             </li>
             {
-              login && <li>
+              user && <li>
                 <Link href="/cart" className="hover:text-blue-300 flex items-center"><FaShoppingCart />Cart</Link>
               </li>
             }
 
             {
-              login && <li>
+              user && <li>
                 <Link href="/logout" className="hover:text-blue-300 flex items-center">Logout</Link>
               </li>
             }
             {
-              !login && <li>
+              !user && <li>
                 <Link href="/login" className="hover:text-blue-300 flex items-center">Login</Link>
               </li>
             }
@@ -58,5 +67,6 @@ const Header = () => {
     </header>
   );
 };
+
 
 export default Header;

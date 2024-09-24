@@ -1,4 +1,4 @@
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { FaShoppingCart } from "react-icons/fa";
 
@@ -6,6 +6,8 @@ import { Product } from "@/interfaces/Product";
 import Rating from "@/components/Rating";
 import Layout from "@/components/Layout";
 import ProductCard from "@/components/ProductCard"; // Import the new ProductCard component
+import { getIronSession } from "iron-session";
+import { sessionOptions } from "@/interfaces/Session";
 
 interface Props {
   product: Product | null;
@@ -13,6 +15,8 @@ interface Props {
 }
 
 const ProductView = ({ product, similarProducts }: Props) => {
+
+
   if (!product) {
     return (
       <div>
@@ -69,52 +73,57 @@ const ProductView = ({ product, similarProducts }: Props) => {
   );
 };
 
-export function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: 'blocking'
-  };
-}
+const isValidId = (id: any): boolean => {
+  return /^\d+$/.test(id);  // Check if the id is a positive integer
+};
 
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-  try {
-    if (params && params.id && typeof params.id === 'string') {
-      parseInt(params.id);
-      let res = await fetch(`https://fakestoreapi.com/products/${params.id}`);
+// Fetch product by ID
+const fetchProductById = async (id: string): Promise<Product | null> => {
+  const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+  if (!res.ok) return null;
+  return res.json();
+};
 
-      if (!res.ok) {
-        return {
-          redirect: {
-            destination: '/500',
-            permanent: false,
-          },
-        };
-      }
+// Fetch similar products by category
+const fetchSimilarProducts = async (category: string): Promise<Product[]> => {
+  const res = await fetch(`https://fakestoreapi.com/products/category/${category}`);
+  return res.ok ? res.json() : [];
+};
 
-      const product = await res.json() as Product;
+export const getServerSideProps: GetServerSideProps<Props> = async ({ params, req, res }) => {
+  const session = await getIronSession(req, res, sessionOptions);
 
-      res = await fetch(`https://fakestoreapi.com/products/category/${product.category}`);
-      const similarProducts = await res.json();
-      return {
-        props: {
-          product,
-          similarProducts
-        },
-        revalidate: 3600,
-      }
-    } else {
-      throw new Error('Invalid Id');
-    }
-  } catch (err) {
-    console.log(err);
+  // Check if the id exists and is valid
+  if (!params?.id || !isValidId(params.id)) {
     return {
-      props: {
-        product: null,
-        similarProducts: null
+      redirect: {
+        destination: '/404',
+        permanent: false,
       },
-      revalidate: 10
-    }
+    };
   }
-}
+
+  // Fetch the product
+  const product = await fetchProductById(params.id as string);
+  if (!product) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+
+  // Fetch similar products
+  const similarProducts = await fetchSimilarProducts(product.category);
+
+  return {
+    props: {
+      product,
+      similarProducts,
+      session,
+    },
+  };
+};
 
 export default ProductView;

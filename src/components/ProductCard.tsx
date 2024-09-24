@@ -1,6 +1,5 @@
 // components/ProductCard.tsx
 import Image from "next/image";
-import { FaShoppingCart } from "react-icons/fa";
 import { Product } from "@/interfaces/Product";
 import Rating from "@/components/Rating";
 import { useRouter } from "next/router";

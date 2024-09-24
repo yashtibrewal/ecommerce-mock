@@ -1,4 +1,7 @@
 import Layout from "@/components/Layout";
+import { sessionOptions } from "@/interfaces/Session";
+import { getIronSession } from "iron-session";
+import { GetServerSidePropsContext } from "next";
 
 // pages/about.tsx
 const AboutPage = () => {
@@ -16,5 +19,15 @@ const AboutPage = () => {
     </Layout>
   );
 };
+
+export const getServerSideProps = async ({ req, res }: GetServerSidePropsContext) => {
+
+  const session = await getIronSession(req, res, sessionOptions);
+  return {
+    props: {
+      session
+    }
+  }
+}
 
 export default AboutPage;

@@ -1,16 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import cookie from 'cookie';
+import { getIronSession } from 'iron-session';
+import { sessionOptions } from '@/interfaces/Session';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    // Clear the token cookie
-    res.setHeader('Set-Cookie', cookie.serialize('token', '', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV !== 'development', // Use secure cookies in production
-      maxAge: 0, // Expire the cookie immediately
-      sameSite: 'strict',
-      path: '/',
-    }));
+
+    const session = await getIronSession(req, res, sessionOptions);
+
+    session.destroy();
 
     return res.status(200).json({ message: 'Logout successful' });
   }

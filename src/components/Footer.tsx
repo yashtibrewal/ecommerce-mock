@@ -1,5 +1,6 @@
 // components/Footer.tsx
 
+import Link from "next/link";
 import { ReactNode } from "react";
 
 interface LayoutProps {
@@ -13,9 +14,9 @@ const Footer = ({ className }: LayoutProps) => {
       <div className="container mx-auto text-center">
         <p>&copy; {new Date().getFullYear()} MySite. All rights reserved.</p>
         <div className="mt-2">
-          <a href="/privacy" className="hover:text-blue-300">Privacy Policy</a>
+          <Link href="/privacy" className="hover:text-blue-300">Privacy Policy</Link>
           <span className="mx-2">|</span>
-          <a href="/terms" className="hover:text-blue-300">Terms of Service</a>
+          <Link href="/terms" className="hover:text-blue-300">Terms of Service</Link>
         </div>
       </div>
     </footer>
