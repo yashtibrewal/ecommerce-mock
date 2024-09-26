@@ -1,0 +1,15 @@
+.message {
+  @apply fixed top-5 right-5 space-x-2 bg-green-200 border border-blue-200 text-blue-800 px-5 py-3 font-bold rounded z-50 transition-opacity duration-300;
+}
+
+.slide-in {
+  @apply translate-y-0 opacity-100;
+}
+
+.slide-out {
+  @apply -translate-y-full opacity-0;
+}
+
+.close-button {
+  @apply absolute top-1 right-1 text-blue-800 hover:text-blue-600 bg-none border-none cursor-pointer;
+}

@@ -8,6 +8,7 @@ import Session, { LoggedInUser, sessionOptions } from "@/interfaces/Session";
 import { getIronSession } from "iron-session";
 import { useSessionContext } from "@/context/Session";
 import { UserSession } from "@/interfaces/UserSession";
+import { capitalize } from "@/utils/functions";
 
 
 interface Props {
@@ -65,8 +66,7 @@ const ProductsPage = ({ products, categories }: Props) => {
   return (
     <Layout>
       <div className="container mx-auto p-4 mt-10">
-        <h1 className="text-4xl font-bold mb-6">Products</h1>
-        {user && <h3 className="text-2xl font-semibold mb-2">Welcome {user && user.name} </h3>}
+        {user && <h3 className="text-2xl font-semibold mb-2">Welcome {user && capitalize(user.name)} </h3>}
         <div className="mb-4">
           <label htmlFor="category" className="mr-2">Filter by Category:</label>
           <select

@@ -12,7 +12,7 @@ const Footer = ({ className }: LayoutProps) => {
   return (
     <footer className={`bg-gray-800 text-white p-4 mt-4 ${className}`}>
       <div className="container mx-auto text-center">
-        <p>&copy; {new Date().getFullYear()} MySite. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} MyEcommerceMock. All rights reserved.</p>
         <div className="mt-2">
           <Link href="/privacy" className="hover:text-blue-300">Privacy Policy</Link>
           <span className="mx-2">|</span>

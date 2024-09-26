@@ -4,12 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import landingImage from '@/images/LoginPagePhoto.jpg';
+import Notification from '@/components/Notification';
 
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [showNotification, setShowNotification] = useState<boolean>(true);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,6 +44,7 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
+      {showNotification && <Notification message={"Please use any random email and password to login. This is just a sample page."} onClose={() => setShowNotification(false)}></Notification>}
       {/* Left Section with Image */}
       <div className="flex-1 flex items-center justify-center">
         <Image
@@ -94,14 +97,14 @@ export default function Login() {
 
         <div className="mt-4">
           <Link href="/products">
-            <button className="text-blue-500 underline">Skip to Products</button>
+            <button className="text-blue-500 underline">Skip</button>
           </Link>
         </div>
 
         {/* Signup Section */}
         <div className="mt-6">
           <span className="text-sm">Don&apos;t have an account? </span>
-          <Link href="/signup">
+          <Link href="/login" onClick={() => setShowNotification(true)}>
             <span className="text-blue-500 underline cursor-pointer">
               Sign up
             </span>

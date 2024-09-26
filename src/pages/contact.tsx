@@ -1,4 +1,5 @@
 import Layout from "@/components/Layout";
+import withAuth from "@/components/withAuth";
 import { useSessionContext } from "@/context/Session";
 import Session, { LoggedInUser, sessionOptions } from "@/interfaces/Session";
 import { UserSession } from "@/interfaces/UserSession";
@@ -38,7 +39,7 @@ const ContactPage = () => {
             <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
             <h2 className="text-xl font-semibold mb-2">Our Contact Details</h2>
             <p>
-              <strong>Email:</strong> support@mysite.com
+              <strong>Email:</strong> support@MyEcommerceMock.com
             </p>
             <p>
               <strong>Phone:</strong> +1 (555) 123-4567
@@ -91,4 +92,4 @@ export const getServerSideProps = async ({ req, res }: GetServerSidePropsContext
   }
 }
 
-export default ContactPage;
+export default withAuth(ContactPage);
