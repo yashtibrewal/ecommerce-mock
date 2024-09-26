@@ -17,7 +17,7 @@ const WishList = () => {
   const wishlistProducts: Product[] = useSelector((state: RootState) => state.wishlists);
 
   const handleRemoveFromWishlist = (product: Product) => {
-    dispatch(removeFromWishlist(product.id));
+    dispatch(removeFromWishlist(product));
   };
 
   const handleMoveToCart = (product: Product) => {

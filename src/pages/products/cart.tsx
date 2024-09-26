@@ -10,6 +10,7 @@ import { removeProduct, decreaseQuantity, increaseQuantity, CartProduct, purchas
 import withAuth from "@/components/withAuth";
 import { useState } from "react";
 import Notification from "@/components/Notification";
+import Image from "next/image";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -51,7 +52,13 @@ const Cart = () => {
               <div key={product.id} className="flex items-center justify-between border-b py-4 min-h-fit">
                 <div className="flex items-center">
                   <div className="mr-4 w-24 h-24 relative tracking-tighter">
-                    <img src={product.image} alt={product.title} className="object-cover w-full h-full rounded-lg" />
+                    <Image
+                      src={product.image}
+                      alt={product.title}
+                      layout="fill"
+                      objectFit="contain"
+                      className="rounded-lg"
+                    />
                   </div>
                   <div className="flex flex-col justify-center">
                     <h4 className="font-semibold min-h-12">{product.title}</h4>

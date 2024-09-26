@@ -8,9 +8,7 @@ import SimilarProducts from "@/components/SimilarProduct";
 import { getIronSession } from "iron-session";
 import { sessionOptions } from "@/interfaces/Session";
 
-import { useDispatch } from 'react-redux';
 import { useSessionContext } from "@/context/Session";
-import { useRouter } from "next/router";
 // import Notification from '@/components/Notification';
 import { useEffect, useState } from "react";
 import AddToCartButton from "@/components/AddToCart";

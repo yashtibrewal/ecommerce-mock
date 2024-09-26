@@ -22,7 +22,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
     if (Object.keys(session).includes('isLoggedIn')) {
       setIsLoggedIn(true);
     }
-  })
+  }, [session])
 
   return (
     <div
