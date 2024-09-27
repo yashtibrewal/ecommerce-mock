@@ -46,7 +46,7 @@ export default function Login() {
     <div className="flex min-h-screen bg-gray-100">
       {showNotification && <Notification message={"Please use any random email and password to login. This is just a sample page."} onClose={() => setShowNotification(false)}></Notification>}
       {/* Left Section with Image */}
-      <div className="flex-1 flex items-center justify-center">
+      <div className="w-full md:flex-1 md:flex items-center justify-center">
         <Image
           src={landingImage} // Sample e-commerce image
           alt="E-commerce"
@@ -55,12 +55,12 @@ export default function Login() {
       </div>
 
       {/* Right Section with Login Form */}
-      <div className="flex-1 flex flex-col items-center justify-center p-8">
+      <div className="absolute w-full min-h-screen bg-slate-200 bg-opacity-50 md:static md:flex-1 flex flex-col items-center justify-center p-8">
         <h1 className="text-3xl font-bold mb-6">Login</h1>
         {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
         <form onSubmit={handleSubmit} className="w-full max-w-md">
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium mb-2">
+            <label htmlFor="email" className="block text-sm font-bold mb-2">
               Email
             </label>
             <input
@@ -74,7 +74,7 @@ export default function Login() {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="password" className="block text-sm font-medium mb-2">
+            <label htmlFor="password" className="block text-sm font-bold mb-2">
               Password
             </label>
             <input

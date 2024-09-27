@@ -1,4 +1,3 @@
-// pages/products.tsx
 import { useState, useEffect } from "react";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Layout from "@/components/Layout";
@@ -10,53 +9,52 @@ import { useSessionContext } from "@/context/Session";
 import { UserSession } from "@/interfaces/UserSession";
 import { capitalize } from "@/utils/functions";
 
-
 interface Props {
   products: Product[] | null;
   categories: string[] | null;
 }
 
 const ProductsPage = ({ products, categories }: Props) => {
-  const itemsPerPage = 6; // Number of items per page
+  const itemsPerPage = 6;
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products || []);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedRating, setSelectedRating] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const session: Session = useSessionContext();
-
   const [user, setUser] = useState<UserSession | null>(null);
 
   useEffect(() => {
-    console.log('in products page use effect for sessions')
     if (session) {
       const keys = Object.keys(session);
-      if (keys.includes('isLoggedIn')) {
-        console.log(keys);
-        console.log(session);
-
+      if (keys.includes("isLoggedIn")) {
         setUser({
           name: (session as LoggedInUser).name,
           email: (session as LoggedInUser).username,
-        })
+        });
       }
     }
-  }, [session])
+  }, [session]);
 
   useEffect(() => {
-    if (selectedCategory) {
-      const filtered = products?.filter(product => product.category === selectedCategory);
-      setFilteredProducts(filtered || []);
-    } else {
-      setFilteredProducts(products || []);
-    }
-    setCurrentPage(1); // Reset to first page on category change
-  }, [selectedCategory, products]);
+    let filtered = products || [];
 
-  // Calculate the products to display for the current page
+    // Filter by category
+    if (selectedCategory) {
+      filtered = filtered.filter(product => product.category === selectedCategory);
+    }
+
+    // Filter by rating
+    if (selectedRating !== null) {
+      filtered = filtered.filter(product => product.rating && product.rating.rate >= selectedRating);
+    }
+
+    setFilteredProducts(filtered);
+    setCurrentPage(1); // Reset to first page on filter change
+  }, [selectedCategory, selectedRating, products]);
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
-
-  // Calculate total pages
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
   const handlePageChange = (page: number) => {
@@ -67,30 +65,47 @@ const ProductsPage = ({ products, categories }: Props) => {
     <Layout>
       <div className="container mx-auto p-4 mt-10">
         {user && <h3 className="text-2xl font-semibold mb-2">Welcome {user && capitalize(user.name)} </h3>}
-        <div className="mb-4">
-          <label htmlFor="category" className="mr-2">Filter by Category:</label>
-          <select
-            id="category"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="border p-2"
-          >
-            <option value="">All Categories</option>
-            {categories && categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
+        <div className="mb-4 flex flex-wrap gap-y-4 gap-x-4 items-center">
+
+          <div >
+            <label htmlFor="category" className="mr-2">Filter by Category:</label>
+            <select
+              id="category"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="border p-2"
+            >
+              <option value="">All Categories</option>
+              {categories && categories.map((category) => (
+                <option key={category} value={category}>
+                  {capitalize(category)}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div >
+            <label htmlFor="rating" className="mr-2">Filter by Rating:</label>
+            <select
+              id="rating"
+              value={selectedRating || ""}
+              onChange={(e) => setSelectedRating(Number(e.target.value))}
+              className="border p-2"
+            >
+              <option value="">All Ratings</option>
+              <option value={1}>1 and above</option>
+              <option value={2}>2 and above</option>
+              <option value={3}>3 and above</option>
+              <option value={4}>4 and above</option>
+              <option value={5}>5 only</option>
+            </select>
+          </div>
         </div>
 
-        <div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {paginatedProducts.length > 0 ? (
             paginatedProducts.map((product) => (
-              <ProductCard
-                key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} />
             ))
           ) : (
             <p>No products found.</p>
@@ -98,11 +113,11 @@ const ProductsPage = ({ products, categories }: Props) => {
         </div>
 
         {/* Pagination Controls */}
-        <div className="flex justify-between mt-4">
+        <div className="flex justify-between items-center mt-4">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="border px-4 py-2 bg-blue-500 text-white rounded"
+            className="border px-2 py-1 bg-blue-500 text-white rounded"
           >
             Previous
           </button>
@@ -112,7 +127,7 @@ const ProductsPage = ({ products, categories }: Props) => {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="border px-4 py-2 bg-blue-500 text-white rounded"
+            className="border px-2 py-1 bg-blue-500 text-white rounded"
           >
             Next
           </button>
@@ -123,10 +138,9 @@ const ProductsPage = ({ products, categories }: Props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-
   const { req, res } = context;
 
-  const session = await getIronSession(req, res, sessionOptions)
+  const session = await getIronSession(req, res, sessionOptions);
 
   try {
     const resProducts = await fetch("https://fakestoreapi.com/products");

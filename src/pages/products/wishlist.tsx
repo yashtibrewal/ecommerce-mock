@@ -45,16 +45,16 @@ const WishList = () => {
                 <h4 className="text-lg min-h-24 font-semibold">{product.title}</h4>
                 <p className="text-blue-600 font-bold">${product.price}</p>
                 <button
-                  onClick={() => handleRemoveFromWishlist(product)}
-                  className="mt-2 bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600"
-                >
-                  Remove from Wishlist
-                </button>
-                <button
                   onClick={() => handleMoveToCart(product)}
-                  className="mt-2 bg-green-500 text-white px-3 py-2 rounded hover:bg-red-600"
+                  className="mt-2 text-green-500 border border-green-500 px-3 py-2 rounded hover:bg-green-500 hover:text-white"
                 >
                   Move to cart
+                </button>
+                <button
+                  onClick={() => handleRemoveFromWishlist(product)}
+                  className="mt-2 text-red-500 border border-red-500  px-3 py-2 rounded hover:bg-red-500 hover:text-white"
+                >
+                  Remove from Wishlist
                 </button>
               </div>
             ))}

@@ -39,7 +39,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <h3 className="font-semibold min-h-20">{product.title}</h3>
       <Rating rating={product.rating.rate} count={product.rating.count} />
       <h4 className="text-xl font-bold">${product.price}</h4>
-      <div onClick={(e) => e.stopPropagation()} className="flex flex-wrap gap-x-5 gap-y-5 justify-center">
+      <div onClick={(e) => e.stopPropagation()} className="flex flex-wrap gap-x-2 md:gap-x-5 gap-y-2 md:gap-y-5 justify-center">
         {isLoggedIn && <AddToCartButton product={product}></AddToCartButton>}
         {isLoggedIn && <AddToWishlistButton product={product}></AddToWishlistButton>}
       </div>

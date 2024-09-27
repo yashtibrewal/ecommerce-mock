@@ -41,17 +41,18 @@ const Cart = () => {
 
   return (
     <Layout>
-      <div className="p-4 w-full md:w-8/12 flex flex-col mx-auto">
+      <div className="p-2 md:p-4 w-full md:w-8/12 flex flex-col mx-auto">
         {showMessage && <Notification
           message={"Thank you for your purchase, your bill will be emailed to you."}
           onClose={() => setShowMessage(false)}></Notification>}
         <h3 className="text-2xl font-bold mb-4">Shopping Cart</h3>
         {cartProducts.length > 0 ? (
-          <div>
+          <div className="">
             {cartProducts.map((product) => (
-              <div key={product.id} className="flex items-center justify-between border-b py-4 min-h-fit">
-                <div className="flex items-center">
-                  <div className="mr-4 w-24 h-24 relative tracking-tighter">
+              <div key={product.id} className="flex flex-wrap items-center gap-y-2 justify-center md:justify-between border-b py-4 min-h-fit">
+                <h4 className="w-full font-semibold min-h-12 tracking-tighter ">{product.title}</h4>
+                <div className="flex flex-wrap gap-y-2 items-center">
+                  <div className="mr-4 w-full md:w-24 h-24 relative mx-auto">
                     <Image
                       src={product.image}
                       alt={product.title}
@@ -60,9 +61,8 @@ const Cart = () => {
                       className="rounded-lg"
                     />
                   </div>
-                  <div className="flex flex-col justify-center">
-                    <h4 className="font-semibold min-h-12">{product.title}</h4>
-                    <div className="flex items-center gap-x-10">
+                  <div className="flex flex-col mx-auto">
+                    <div className="flex items-center mx-auto gap-x-10">
                       <div className="flex items-center">
                         <button onClick={() => handleDecreaseQuantity(product)} className="px-2 py-1 border">
                           -
@@ -78,15 +78,15 @@ const Cart = () => {
                 </div>
                 <button
                   onClick={() => handleRemoveProduct(product)}
-                  className="bg-red-500 text-white px-4 py-2 rounded">
+                  className="text-red-500 border border-red-500 px-3 py-1 rounded hover:text-white hover:bg-red-500">
                   Remove
                 </button>
               </div>
             ))}
-            <div className="mt-4 flex flex-wrap justify-between items-center">
-              <h4 className="text-xl font-bold">Total: ${totalPrice.toFixed(2)}</h4>
+            <div className="mt-4 w-full flex flex-wrap justify-between items-center">
+              <h4 className="text-base md:text-xl font-bold">Total: ${totalPrice.toFixed(2)}</h4>
               <button
-                className="border-green-500 bg-green-500 rounded px-5 py-2 hover:bg-green-600 text-white"
+                className="border-green-500 bg-green-500 rounded px-3 py-1 hover:bg-green-600 text-white"
                 onClick={handlePurchase}
               >Place Order</button>
             </div>

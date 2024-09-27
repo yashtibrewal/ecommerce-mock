@@ -41,22 +41,22 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({ product }) => {
         <div className="flex items-center">
           <button
             onClick={handleDecreaseQuantity}
-            className="flex items-center justify-center border-2 bg-blue-500 text-white border-blue-500 rounded-l px-3 py-2 hover:bg-blue-700">
+            className="flex items-center justify-center border-2 bg-blue-500 text-white border-blue-500 rounded-l px-3 py-1 hover:bg-blue-700">
             -
           </button>
-          <span className="flex items-center justify-center border-t-2 border-b-2 border-blue-500 px-4 py-2">
+          <span className="flex items-center justify-center border-t-2 border-b-2 border-blue-500 px-3 py-1">
             {productQuantity}
           </span>
           <button
             onClick={handleIncreaseQuantity}
-            className="flex items-center justify-center border-2 bg-blue-500 text-white border-blue-500 rounded-r px-3 py-2 hover:bg-blue-700">
+            className="flex items-center justify-center border-2 bg-blue-500 text-white border-blue-500 rounded-r px-3 py-1 hover:bg-blue-700">
             +
           </button>
         </div>
       ) : (
         <button
           onClick={handleAddProduct}
-          className="tracking-tighter flex items-center justify-center border-2 bg-blue-200 border-blue-500 rounded px-5 py-2">
+          className="tracking-tighter flex items-center justify-center border-2 bg-blue-200 border-blue-500 rounded px-3 py-1">
           Add to cart <FaShoppingCart className="ml-3" />
         </button>
       )}

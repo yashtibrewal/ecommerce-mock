@@ -1,7 +1,5 @@
-// components/Header.tsx
-
 import Link from 'next/link';
-import { FaShoppingCart, FaHeart, FaUserCircle, FaEnvelope, FaHome, FaInfoCircle } from 'react-icons/fa'; // Added FaHeart and FaUserCircle icons
+import { FaShoppingCart, FaHeart, FaUserCircle, FaEnvelope, FaHome, FaSignInAlt, FaBars } from 'react-icons/fa'; // Added FaBars for the mobile menu icon
 import { useSessionContext } from '@/context/Session';
 import { useEffect, useState } from 'react';
 import { UserSession } from '@/interfaces/UserSession';
@@ -11,7 +9,8 @@ import { capitalize } from '@/utils/functions';
 const Header = () => {
   const session = useSessionContext();
   const [user, setUser] = useState<UserSession | null>(null);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State to manage dropdown visibility
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State for mobile menu toggle
 
   useEffect(() => {
     if (session) {
@@ -31,20 +30,24 @@ const Header = () => {
         <h1 className="text-xl font-bold">
           <Link href="/">MyEcommerceMock</Link>
         </h1>
-        <nav>
-          <ul className="flex space-x-4 items-center">
+
+        {/* Mobile menu toggle button */}
+        <button
+          className="text-white lg:hidden"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <FaBars size={24} />
+        </button>
+
+        {/* Navigation - hidden on mobile */}
+        <nav className={`lg:flex ${isMobileMenuOpen ? 'absolute right-5 top-10 mt-2 w-fit px-5 py-5  bg-white text-blue-600 rounded-md shadow-lg z-10' : 'hidden'} lg:block`}>
+          <ul className="flex flex-col lg:flex-row gap-y-2 lg:gap-y-0 gap-x-4 items-start">
             <li>
               <Link href="/" className="flex items-center hover:text-blue-300"><FaHome className="mr-2" />Home</Link>
             </li>
-            <li>
-              <Link href="/about" className="flex items-center hover:text-blue-300"><FaInfoCircle className="mr-2" />About</Link>
-            </li>
             {
-              user && (
+              user ? (
                 <>
-                  <li>
-                    <Link href="/contact" className="flex items-center hover:text-blue-300"><FaEnvelope className="mr-2" />Contact</Link>
-                  </li>
                   <li>
                     <Link href="/products/cart" className="hover:text-blue-300 flex items-center">
                       <FaShoppingCart className="mr-2" />Cart
@@ -53,16 +56,22 @@ const Header = () => {
                   {/* Profile dropdown */}
                   <li className="relative">
                     <button
-                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className="flex items-center hover:text-blue-300">
+                      onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                      className="flex items-center hover:text-blue-300"
+                    >
                       <FaUserCircle className="mr-2" />{user.name}
                     </button>
-                    {isDropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white text-blue-600 rounded-md shadow-lg">
+                    {isProfileDropdownOpen && (
+                      <div className="absolute right-0 mt-2 w-fit px-2 text-sm bg-white text-blue-600 rounded-md shadow-lg z-10">
                         <ul className="py-2">
                           <li>
                             <Link href="/products/wishlist" className="px-4 py-2 hover:bg-blue-200 flex items-center">
                               <FaHeart className="mr-2" />Wishlist
+                            </Link>
+                          </li>
+                          <li>
+                            <Link href="/contact" className="px-4 py-2 hover:bg-blue-200 flex items-center">
+                              <FaEnvelope className="mr-2" />Contact
                             </Link>
                           </li>
                           <li>
@@ -75,12 +84,9 @@ const Header = () => {
                     )}
                   </li>
                 </>
-              )
-            }
-            {
-              !user && (
+              ) : (
                 <li>
-                  <Link href="/login" className="hover:text-blue-300 flex items-center">Login</Link>
+                  <Link href="/login" className="hover:text-blue-300 flex items-center"><FaSignInAlt className="mr-2" />Login</Link>
                 </li>
               )
             }
