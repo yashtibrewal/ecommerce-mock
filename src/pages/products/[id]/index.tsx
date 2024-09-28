@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import AddToCartButton from "@/components/AddToCart";
 import AddToWishlistButton from "@/components/AddToWishList";
 import Link from "next/link";
+import { capitalize } from "@/utils/functions";
 
 interface Props {
   product: Product | null;
@@ -61,6 +62,7 @@ const ProductView = ({ product }: Props) => {
             <h5 className="font-light tracking-tight">Price</h5>
             <h3 className="text-xl font-semibold">${product.price}</h3>
           </div>
+          <p className="tracking-tighter">{capitalize(product.description)}</p>
           <hr />
           {/* Use the new components */}
           <div className="flex gap-y-5 gap-x-5">
