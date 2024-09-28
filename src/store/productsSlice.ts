@@ -49,6 +49,9 @@ const cartProductsSlice = createSlice({
     },
     purchaseAllProducts: (state) => {
       state.length = 0;
+    },
+    removeAllProducts: (state) => {
+      state.length = 0;
     }
   }
 });
@@ -71,5 +74,5 @@ export const getProductQuantityInCart = (state: RootState, id: number | undefine
   }
 }
 
-export const { addProductToCard, decreaseQuantity, increaseQuantity, removeProduct, purchaseAllProducts } = cartProductsSlice.actions;
+export const { addProductToCard, decreaseQuantity, increaseQuantity, removeProduct, purchaseAllProducts, removeAllProducts } = cartProductsSlice.actions;
 export default cartProductsSlice.reducer;

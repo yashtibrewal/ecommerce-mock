@@ -26,6 +26,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <div
+      data-cy="product-card"
       onClick={() => router.push(`/products/${product.id}`)}
       className="flex flex-col gap-y-2 border p-4 rounded bg-slate-50 hover:cursor-pointer">
       <div className="relative min-h-48 max-h-48 h-48 w-full mb-4">
@@ -36,7 +37,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
           style={{ objectFit: "contain" }}
         />
       </div>
-      <h3 className="font-semibold min-h-20">{product.title}</h3>
+      <h3
+        data-cy="product-title"
+        className="font-semibold min-h-20">{product.title}</h3>
       <Rating rating={product.rating.rate} count={product.rating.count} />
       <h4 className="text-xl font-bold">${product.price}</h4>
       <div onClick={(e) => e.stopPropagation()} className="flex flex-wrap gap-x-2 md:gap-x-5 gap-y-2 md:gap-y-5 justify-center">

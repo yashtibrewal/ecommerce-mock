@@ -33,6 +33,7 @@ const Header = () => {
 
         {/* Mobile menu toggle button */}
         <button
+          data-cy="hamburger-icon" // for cypress testing
           className="text-white lg:hidden"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
@@ -56,6 +57,7 @@ const Header = () => {
                   {/* Profile dropdown */}
                   <li className="relative">
                     <button
+                      data-cy="user-profile-button" // for cypress testing
                       onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
                       className="flex items-center hover:text-blue-300"
                     >

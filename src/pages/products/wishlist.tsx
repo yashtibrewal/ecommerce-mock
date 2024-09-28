@@ -32,7 +32,9 @@ const WishList = () => {
         {wishlistProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {wishlistProducts.map((product: Product) => (
-              <div key={product.id} className="border bg-slate-100 p-4 rounded-lg">
+              <div
+                data-cy='wishlist-product'
+                key={product.id} className="border bg-slate-100 p-4 rounded-lg">
                 <div className="relative w-full h-64 mb-4">
                   <Image
                     src={product.image}
@@ -42,7 +44,9 @@ const WishList = () => {
                     className="rounded-lg"
                   />
                 </div>
-                <h4 className="text-lg min-h-24 font-semibold">{product.title}</h4>
+                <h4
+                  data-cy='title'
+                  className="text-lg min-h-24 font-semibold">{product.title}</h4>
                 <p className="text-blue-600 font-bold">${product.price}</p>
                 <button
                   onClick={() => handleMoveToCart(product)}

@@ -37,7 +37,7 @@ const ContactPage = () => {
     <Layout>
       <div className="container p-4">
         {showMessage && <Notification message="Your message has been received" onClose={() => setShowMessage(false)} />}
-        <div className="flex flex-wrap items-center justify-between">
+        <div className="items-center grid grid-cols-1 lg:grid-cols-2">
           <div className="mb-6 space-y-2 w-full">
             <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
             <h2 className="text-xl font-semibold mb-2">Our Contact Details</h2>

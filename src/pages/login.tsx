@@ -51,6 +51,7 @@ export default function Login() {
           src={landingImage} // Sample e-commerce image
           alt="E-commerce"
           className="object-cover w-full h-full"
+          priority={true}
         />
       </div>
 
@@ -71,6 +72,7 @@ export default function Login() {
               required
               className="border border-gray-300 p-2 w-full rounded"
               placeholder="Enter your email"
+              data-cy="email-input" // Adding data-cy for Cypress testing
             />
           </div>
           <div className="mb-6">
@@ -85,18 +87,20 @@ export default function Login() {
               required
               className="border border-gray-300 p-2 w-full rounded"
               placeholder="Enter your password"
+              data-cy="password-input" // Adding data-cy for Cypress testing
             />
           </div>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded"
+            data-cy="login-button"
           >
             Login
           </button>
         </form>
 
         <div className="mt-4">
-          <Link href="/products">
+          <Link data-cy="skip-link" href="/products">
             <button className="text-blue-500 underline">Skip</button>
           </Link>
         </div>

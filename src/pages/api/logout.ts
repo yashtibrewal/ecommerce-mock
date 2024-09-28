@@ -9,6 +9,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     session.destroy();
 
+    console.log(session);
+
     return res.status(200).json({ message: 'Logout successful' });
   }
 

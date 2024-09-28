@@ -27,12 +27,14 @@ const AddToWishlistButton: React.FC<AddToWishlistButtonProps> = ({ product }) =>
     <>
       {isInWishlist ? (
         <button
+          data-cy="remove-from-wishlist-button"
           onClick={handlerRemoveWishlist}
           className="tracking-tighter flex items-center justify-center border-2 bg-pink-50 border-pink-500 rounded px-3 py-1">
           Remove from wishlist <FaHeart className="ml-3" />
         </button>
       ) : (
         <button
+          data-cy="add-to-wishlist-button"
           onClick={handlerAddWishlist}
           className="tracking-tighter flex items-center justify-center border-2 bg-pink-100 border-pink-500 rounded px-3 py-1">
           Add to wishlist <FaHeart className="ml-3" />
