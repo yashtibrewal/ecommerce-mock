@@ -1,0 +1,1 @@
+export const WAIT_TIME_AFTER_CLICK = 200;

@@ -1,4 +1,8 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) based project for depicted an ecommerce mock website.
+The reason we have used Nextjs compared to just react is because ecommerce websites should perform well in SEO,
+and nextjs does a pretty good job for the same.
+If its a react application SPA will contain a single head component,
+however in Nextjs we can have server rendered components and add product information dynamically.
 
 ## Getting Started
 
@@ -6,35 +10,29 @@ First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The port could be different based on the availibility.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Functionalities Included:
+1. Login/Logout
+2. Cart Page
+3. Wish List Page
+4. Indivisual Product Page
+5. Main landing products page with filters
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+This is a serverless project and is just a mock project, hence is stateless stored on the backend.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Products and other objects can be added to wishlist, cart etc.. however all of this is just stored on the frontend localstorage using [redux-persist](https://www.npmjs.com/package/redux-persist) library.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+For cookies handling for routes, [iron-session](https://www.npmjs.com/package/iron-session/v/8.0.0-beta.5) is used.
 
-## Learn More
+For testing purposes, I have used cypress. To view cypress testing in real time, feel free to pull the code and run the test script.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run cypress:open
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+After that, the UI will guide you for the same.
+You can run the tests there accordingly.

@@ -8,19 +8,25 @@ import { RootState } from '@/store';
 import { Product } from '@/interfaces/Product';
 
 interface AddToWishlistButtonProps {
-  product: Product;
+  product: Product; // Defines the product for the wishlist
 }
 
 const AddToWishlistButton: React.FC<AddToWishlistButtonProps> = ({ product }) => {
-  const dispatch = useDispatch();
-  const isInWishlist = useSelector((state: RootState) => selectIsPresentInWishlist(state, product.id));
+  const dispatch = useDispatch(); // Hook to access Redux store dispatch
+  const isInWishlist = useSelector((state: RootState) => selectIsPresentInWishlist(state, product.id)); // Selects wishlist status from the store
 
+  /**
+   * Handles adding the product to the wishlist by dispatching the appropriate action.
+   */
   const handlerAddWishlist = () => {
-    dispatch(addToWishlist(product));
+    dispatch(addToWishlist(product)); // Dispatch action to add product to wishlist
   };
 
+  /**
+   * Handles removing the product from the wishlist by dispatching the appropriate action.
+   */
   const handlerRemoveWishlist = () => {
-    dispatch(removeFromWishlist(product));
+    dispatch(removeFromWishlist(product)); // Dispatch action to remove product from wishlist
   };
 
   return (

@@ -1,4 +1,7 @@
 // components/ProductCard.tsx
+/**
+ * This component is used on the products page for every product view.
+ */
 import Image from "next/image";
 import { Product } from "@/interfaces/Product";
 import Rating from "@/components/Rating";

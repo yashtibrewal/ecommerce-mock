@@ -1,3 +1,8 @@
+
+/**
+ * This is a wrapper component used to wrap the protected routes.
+ */
+
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSessionContext } from "@/context/Session"; // Assuming you have a context for session

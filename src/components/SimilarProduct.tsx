@@ -1,3 +1,7 @@
+/**
+ * This component is used to fetch the similar products based on the product.
+ */
+
 import { useEffect, useState } from "react";
 import { Product } from "@/interfaces/Product";
 import ProductCard from "@/components/ProductCard";
